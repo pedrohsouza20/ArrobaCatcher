@@ -5,7 +5,7 @@
 #include <time.h>
 #include <windows.h>
 
-void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit){
+void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score){
     system("cls");
 
     char table[10][10];
@@ -23,7 +23,7 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit){
             }
         }
     }
-
+    printf("\t\t ===== SCORE: %i =====", score);
     printf("\n\n\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\n", table[0][0], table[0][1], table[0][2], table[0][3], table[0][4], table[0][5], table[0][6], table[0][7], table[0][8], table[0][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[1][0], table[1][1], table[1][2], table[1][3], table[1][4], table[1][5], table[1][6], table[1][7], table[1][8], table[1][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[2][0], table[2][1], table[2][2], table[2][3], table[2][4], table[2][5], table[2][6], table[2][7], table[2][8], table[2][9]);
@@ -37,17 +37,46 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit){
 
 }
 
+void showMenu(){
+    char *optionsLines[] = {"Jogar", "Score", "Sair"};
+    char choosenSymbol = '>';
+    int choosenOption = 1;
+
+    do{
+
+      system("cls");
+        printf("\n\t=== Arroba Catcher ===\n\n");
+      for(int i = 0; i < 3; i++){
+        if((choosenOption - 1) == i){
+            printf("%c", choosenSymbol);
+            printf("\t %s \n", optionsLines[i]);
+        }else{
+            printf("\t %s \n", optionsLines[i]);
+        }
+      }
+        choosenOption = getch();
+        if(choosenOption == 72){
+            choosenOption++;
+        }else if(choosenOption == 80){
+            choosenOption--;
+        }
+    }while(choosenOption != 0);
+
+}
+
 int main(){
+    showMenu();
     setlocale(LC_ALL, "");
     int yPlayerNum;
     int xPlayerNum;
     int yFruitNum;
     int xFruitNum;
+    int score = 0;
 
     srand( (unsigned)time(NULL) );
     xPlayerNum = (rand() % 9);
     yPlayerNum = (rand() % 9);
-    srand( (unsigned)time(NULL) );
+    srand( (unsigned)time(NULL) + time(NULL));
     xFruitNum = (rand() % 9);
     yFruitNum = (rand() % 9);
 
@@ -58,9 +87,11 @@ int main(){
         if(xPlayerNum == xFruitNum && yPlayerNum == yFruitNum){
            xFruitNum = (rand() % 9);
            yFruitNum = (rand() % 9);
+           score++;
         }
 
         if(xPlayerNum > 9){
+           score++;
             xPlayerNum = 0;
         }
         else if(xPlayerNum < 0){
@@ -82,21 +113,21 @@ int main(){
             yFruitNum = 9;
         }
 
-        renderTable(xPlayerNum, yPlayerNum, xFruitNum, yFruitNum);
+        renderTable(xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
         moveReceiver = getch();
         if(moveReceiver == 72){
             //arrowUp
-            renderTable(xPlayerNum, --yPlayerNum, xFruitNum, yFruitNum);
+            renderTable(xPlayerNum, --yPlayerNum, xFruitNum, yFruitNum, score);
         }
         else if(moveReceiver == 77){
             //arrow right
-            renderTable(++xPlayerNum, yPlayerNum, xFruitNum, yFruitNum);
+            renderTable(++xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
         }else if(moveReceiver == 80){
             //arrow down
-            renderTable(xPlayerNum, ++yPlayerNum, xFruitNum, yFruitNum);
+            renderTable(xPlayerNum, ++yPlayerNum, xFruitNum, yFruitNum, score);
         }else if(moveReceiver == 75){
             //arrow left
-            renderTable(--xPlayerNum, yPlayerNum, xFruitNum, yFruitNum);
+            renderTable(--xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
         }
 
     }while(1==1);
