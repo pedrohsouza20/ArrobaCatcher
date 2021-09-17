@@ -2,23 +2,30 @@
 #include <stdlib.h>
 #include <locale.h>
 #include <conio.h>
-#include <time.h>
-#include <windows.h>
 
-void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score){
+
+void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score, int moveReceiver)
+{
     system("cls");
 
     char table[10][10];
 
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 10; i++)
+    {
 
-        for(int j = 0; j < 10; j++){
-            if(i == xPlayer && j == yPlayer){
+        for(int j = 0; j < 10; j++)
+        {
+            if(i == xPlayer && j == yPlayer)
+            {
                 table[i][j] = 'O';
-            }else if(i == xFruit && j == yFruit){
+            }
+            else if(i == xFruit && j == yFruit)
+            {
 
                 table[i][j] = '@';
-            }else{
+            }
+            else
+            {
                 table[i][j] = '.';
             }
         }
@@ -37,100 +44,156 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score){
 
 }
 
-void showMenu(){
+int showMenu()
+{
     char *optionsLines[] = {"Jogar", "Score", "Sair"};
     char choosenSymbol = '>';
     int choosenOption = 1;
+    int arrowMovies;
 
-    do{
+    system("color 02");
+    do
+    {
+        system("cls");
 
-      system("cls");
+
         printf("\n\t=== Arroba Catcher ===\n\n");
-      for(int i = 0; i < 3; i++){
-        if((choosenOption - 1) == i){
-            printf("%c", choosenSymbol);
-            printf("\t %s \n", optionsLines[i]);
-        }else{
-            printf("\t %s \n", optionsLines[i]);
+        //printf("%i", arrowMovies);
+        for(int i = 0; i < 3; i++)
+        {
+            printf("\t");
+            if((choosenOption - 1) == i)
+            {
+                printf("%c", choosenSymbol);
+                printf(" %s \n", optionsLines[i]);
+            }
+            else
+            {
+                printf(" %s \n", optionsLines[i]);
+            }
         }
-      }
-        choosenOption = getch();
-        if(choosenOption == 72){
+
+        arrowMovies = getch();
+
+        if(arrowMovies == 80)  //arrowDown
+        {
             choosenOption++;
-        }else if(choosenOption == 80){
-            choosenOption--;
+            if(choosenOption > 3)
+            {
+                choosenOption = 1;
+            }
         }
-    }while(choosenOption != 0);
+        else if(arrowMovies == 72)  //arrowUp
+        {
+            choosenOption--;
+            if(choosenOption < 1)
+            {
+                choosenOption = 3;
+            }
+        }
+    }
+    while(arrowMovies != 13);
+
+    return choosenOption;
+}
+
+void startGame(){
+    int yPlayer;
+    int xPlayer;
+    int yFruit;
+    int xFruit;
+    int score = 0;
+    int moveReceiver;
+
+    score = 0;
+    srand( (unsigned)time(NULL) );
+    xPlayer = (rand() % 9);
+    yPlayer = (rand() % 9);
+    srand( (unsigned)time(NULL) + time(NULL));
+    xFruit = (rand() % 9);
+    yFruit = (rand() % 9);
+
+    do
+        {
+            renderTable(xPlayer, yPlayer, xFruit, yFruit, score, moveReceiver);
+
+
+
+            //muda o posicionamento do cursor para o inicio da linha/coluna
+            //quando for invalido
+
+
+            //renderTable(xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
+            moveReceiver = getch();
+            if(moveReceiver == 72)
+            {
+                //arrowUp
+                renderTable(xPlayer, --yPlayer, xFruit, yFruit, score, moveReceiver);
+                if(yPlayer < 0){
+                    yPlayer = 9;
+                }
+            }
+            else if(moveReceiver == 77)
+            {
+                //arrow right
+                renderTable(++xPlayer, yPlayer, xFruit, yFruit, score, moveReceiver);
+                if(xPlayer > 9){
+                    xPlayer = 0;
+                }
+
+            }
+            else if(moveReceiver == 80)
+            {
+                //arrow down
+                renderTable(xPlayer, ++yPlayer, xFruit, yFruit, score, moveReceiver);
+                if(yPlayer > 9){
+                    yPlayer = 0;
+                }
+            }
+            else if(moveReceiver == 75)
+            {
+                //arrow left
+                renderTable(--xPlayer, yPlayer, xFruit, yFruit, score, moveReceiver);
+                if(xPlayer < 0){
+                    xPlayer = 9;
+                }
+            }
+
+            //quando usuario alcançar o @, o @ recebe uma nova posicao
+            //e o score é incrementado
+            if(xPlayer == xFruit && yPlayer == yFruit){
+                srand( (unsigned)time(NULL) + time(NULL));
+                xFruit = (rand() % 9);
+                yFruit = (rand() % 9);
+                score++;
+            }
+
+        }
+        while(1==1);
+}
+
+void executeChoosedOption(int chooseResult)
+{
+    //system("cls");
+    if(chooseResult == 1)
+    {
+        startGame();
+
+    }
 
 }
 
-int main(){
-    showMenu();
+int main()
+{
     setlocale(LC_ALL, "");
-    int yPlayerNum;
-    int xPlayerNum;
-    int yFruitNum;
-    int xFruitNum;
-    int score = 0;
 
-    srand( (unsigned)time(NULL) );
-    xPlayerNum = (rand() % 9);
-    yPlayerNum = (rand() % 9);
-    srand( (unsigned)time(NULL) + time(NULL));
-    xFruitNum = (rand() % 9);
-    yFruitNum = (rand() % 9);
+    showMenu();
+    int showMenuResult = showMenu();
 
-
-    int moveReceiver;
-    do{
-
-        if(xPlayerNum == xFruitNum && yPlayerNum == yFruitNum){
-           xFruitNum = (rand() % 9);
-           yFruitNum = (rand() % 9);
-           score++;
-        }
-
-        if(xPlayerNum > 9){
-           score++;
-            xPlayerNum = 0;
-        }
-        else if(xPlayerNum < 0){
-            xPlayerNum = 9;
-        }else if(yPlayerNum > 9){
-            yPlayerNum = 0;
-        }
-        else if(yPlayerNum < 0){
-            yPlayerNum = 9;
-        }
-
-        if(xFruitNum > 9){
-            xFruitNum = 0;
-        }else if(xFruitNum < 0){
-            xFruitNum = 0;
-        }else if(yFruitNum > 9){
-            yFruitNum = 0;
-        }else if(yFruitNum < 0){
-            yFruitNum = 9;
-        }
-
-        renderTable(xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
-        moveReceiver = getch();
-        if(moveReceiver == 72){
-            //arrowUp
-            renderTable(xPlayerNum, --yPlayerNum, xFruitNum, yFruitNum, score);
-        }
-        else if(moveReceiver == 77){
-            //arrow right
-            renderTable(++xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
-        }else if(moveReceiver == 80){
-            //arrow down
-            renderTable(xPlayerNum, ++yPlayerNum, xFruitNum, yFruitNum, score);
-        }else if(moveReceiver == 75){
-            //arrow left
-            renderTable(--xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
-        }
-
-    }while(1==1);
+    //pega o retorno da escolha do menu
+    //e o usa como argumento para a funcao que executa
+    //acao de acordo com a escolha do usuário
+    executeChoosedOption(showMenuResult);
 
     return 0;
 }
