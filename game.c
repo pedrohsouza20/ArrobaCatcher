@@ -4,7 +4,11 @@
 #include <conio.h>
 
 
-void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score, int moveReceiver)
+void closeSystem(){
+    system("exit");
+}
+
+void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score)
 {
     system("cls");
 
@@ -21,7 +25,6 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score, in
             }
             else if(i == xFruit && j == yFruit)
             {
-
                 table[i][j] = '@';
             }
             else
@@ -30,6 +33,7 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score, in
             }
         }
     }
+
     printf("\t\t ===== SCORE: %i =====", score);
     printf("\n\n\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\n", table[0][0], table[0][1], table[0][2], table[0][3], table[0][4], table[0][5], table[0][6], table[0][7], table[0][8], table[0][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[1][0], table[1][1], table[1][2], table[1][3], table[1][4], table[1][5], table[1][6], table[1][7], table[1][8], table[1][9]);
@@ -41,7 +45,6 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score, in
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[7][0], table[7][1], table[7][2], table[7][3], table[7][4], table[7][5], table[7][6], table[7][7], table[7][8], table[7][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[8][0], table[8][1], table[8][2], table[8][3], table[8][4], table[8][5], table[8][6], table[8][7], table[8][8], table[8][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[9][0], table[9][1], table[9][2], table[9][3], table[9][4], table[9][5], table[9][6], table[9][7], table[9][8], table[9][9]);
-
 }
 
 int showMenu()
@@ -64,12 +67,11 @@ int showMenu()
             printf("\t");
             if((choosenOption - 1) == i)
             {
-                printf("%c", choosenSymbol);
-                printf(" %s \n", optionsLines[i]);
+                printf(" %c %s \n", choosenSymbol, optionsLines[i]);
             }
             else
             {
-                printf(" %s \n", optionsLines[i]);
+                printf("   %s \n", optionsLines[i]);
             }
         }
 
@@ -115,20 +117,16 @@ void startGame(){
 
     do
         {
-            renderTable(xPlayer, yPlayer, xFruit, yFruit, score, moveReceiver);
-
-
+            renderTable(xPlayer, yPlayer, xFruit, yFruit, score);
 
             //muda o posicionamento do cursor para o inicio da linha/coluna
             //quando for invalido
-
-
             //renderTable(xPlayerNum, yPlayerNum, xFruitNum, yFruitNum, score);
             moveReceiver = getch();
             if(moveReceiver == 72)
             {
                 //arrowUp
-                renderTable(xPlayer, --yPlayer, xFruit, yFruit, score, moveReceiver);
+                renderTable(xPlayer, --yPlayer, xFruit, yFruit, score);
                 if(yPlayer < 0){
                     yPlayer = 9;
                 }
@@ -136,7 +134,7 @@ void startGame(){
             else if(moveReceiver == 77)
             {
                 //arrow right
-                renderTable(++xPlayer, yPlayer, xFruit, yFruit, score, moveReceiver);
+                renderTable(++xPlayer, yPlayer, xFruit, yFruit, score);
                 if(xPlayer > 9){
                     xPlayer = 0;
                 }
@@ -145,7 +143,7 @@ void startGame(){
             else if(moveReceiver == 80)
             {
                 //arrow down
-                renderTable(xPlayer, ++yPlayer, xFruit, yFruit, score, moveReceiver);
+                renderTable(xPlayer, ++yPlayer, xFruit, yFruit, score);
                 if(yPlayer > 9){
                     yPlayer = 0;
                 }
@@ -153,7 +151,7 @@ void startGame(){
             else if(moveReceiver == 75)
             {
                 //arrow left
-                renderTable(--xPlayer, yPlayer, xFruit, yFruit, score, moveReceiver);
+                renderTable(--xPlayer, yPlayer, xFruit, yFruit, score);
                 if(xPlayer < 0){
                     xPlayer = 9;
                 }
@@ -167,7 +165,6 @@ void startGame(){
                 yFruit = (rand() % 9);
                 score++;
             }
-
         }
         while(1==1);
 }
@@ -175,10 +172,13 @@ void startGame(){
 void executeChoosedOption(int chooseResult)
 {
     //system("cls");
-    if(chooseResult == 1)
-    {
+    if(chooseResult == 1){
         startGame();
-
+    }else if(chooseResult == 2){
+        printf("diferente");
+    }
+    else if(chooseResult == 3){
+        closeSystem();
     }
 
 }
@@ -187,7 +187,6 @@ int main()
 {
     setlocale(LC_ALL, "");
 
-    showMenu();
     int showMenuResult = showMenu();
 
     //pega o retorno da escolha do menu
