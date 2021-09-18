@@ -5,9 +5,26 @@
 
 
 void closeSystem(){
-    system("exit");
+    exit(0);
 }
+void showScores(){
+    system("cls");
+    printf("\n\t=== Arroba Catcher===\n");
+    printf("\n\t=== Melhores Pontuações ===");
+    char content[90];
+    int keyReceiver;
+    FILE *scoresFile;
+    scoresFile = fopen("scores.txt", "r");
+    fscanf(scoresFile, "%s", &content);
+    printf("\n\t%s", content);
+    fclose(scoresFile);
 
+    do{
+        keyReceiver = getch();
+
+    }while(keyReceiver != 27);
+    showMenu();
+}
 void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score)
 {
     system("cls");
@@ -34,7 +51,7 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score)
         }
     }
 
-    printf("\t\t ===== SCORE: %i =====", score);
+    printf("\n\t=== Arroba Catcher ===\t\t==== Seu Score: %i ====", score);
     printf("\n\n\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\n", table[0][0], table[0][1], table[0][2], table[0][3], table[0][4], table[0][5], table[0][6], table[0][7], table[0][8], table[0][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[1][0], table[1][1], table[1][2], table[1][3], table[1][4], table[1][5], table[1][6], table[1][7], table[1][8], table[1][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[2][0], table[2][1], table[2][2], table[2][3], table[2][4], table[2][5], table[2][6], table[2][7], table[2][8], table[2][9]);
@@ -98,7 +115,25 @@ int showMenu()
 
     return choosenOption;
 }
+void confirmSaveGame(){
+    char positiveAnswer;
+    char negativeAnswer;
+    int answer;
+    system("cls");
+    printf("\n\t=== Arroba Catcher ===\n");
+    printf("\n\tDeseja salvar o seu score? (S/N)");
+    do{
+        answer = getch();
+        if(answer == 115 || answer == 83){ //player deseja salvar score;
+        printf("salvar score");
+    }else if(answer == 110 || answer == 78){ //player não deseja salvar score;
+        closeSystem();
+        return;
+    }
+    }while(answer != 110 || answer != 115 || answer != 83 || answer != 78);
 
+
+}
 void startGame(){
     int yPlayer;
     int xPlayer;
@@ -156,6 +191,10 @@ void startGame(){
                     xPlayer = 9;
                 }
             }
+            //config para fechar o game
+            else if(moveReceiver == 27){
+                confirmSaveGame();
+            }
 
             //quando usuario alcançar o @, o @ recebe uma nova posicao
             //e o score é incrementado
@@ -175,12 +214,11 @@ void executeChoosedOption(int chooseResult)
     if(chooseResult == 1){
         startGame();
     }else if(chooseResult == 2){
-        printf("diferente");
+        showScores();
     }
     else if(chooseResult == 3){
         closeSystem();
     }
-
 }
 
 int main()
@@ -189,10 +227,14 @@ int main()
 
     int showMenuResult = showMenu();
 
+    //do while para permitir que entre e saia do score
+    do{
+
     //pega o retorno da escolha do menu
     //e o usa como argumento para a funcao que executa
     //acao de acordo com a escolha do usuário
-    executeChoosedOption(showMenuResult);
+        executeChoosedOption(showMenuResult);
+    }while(executeChoosedOption != 0);
 
     return 0;
 }
