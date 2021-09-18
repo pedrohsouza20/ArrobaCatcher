@@ -1,2 +1,2 @@
-/game.exe
-/game.o
+*.exe
+*.o
