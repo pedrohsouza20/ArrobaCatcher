@@ -7,35 +7,56 @@
 void closeSystem(){
     exit(0);
 }
-void saveScore(int score){
+void saveScore(char playerName[4], int score){
     if(score > 0){
         FILE *addScore;
         addScore = fopen("scores.txt", "a");
-        fprintf(addScore, "%i\n" , score);
+        printf("%s", playerName);
+        fprintf(addScore, "%s", playerName);
+        fprintf(addScore, "\t%i\n", score);
         fclose(addScore);
+
+        if(addScore != NULL){
+            printf("\n\n\t=== Seu Score foi salvo! ===\n");
+        }else{
+            printf("\n\tErro ao salvar Score");
+        }
+
         closeSystem();
     }else{
-        printf("\n\tNão é possivel salvar score 0");
+        printf("\n\n\t=== Não é possivel salvar Score 0 ===\n");
         closeSystem();
     }
 }
 void showScores(){
+    char ch;
+    char eachScoreLine[15];
+    int keyReceiver;
+    int num = 0 ;
+
     system("cls");
     printf("\n\t=== Arroba Catcher ===\n");
-    printf("\n\t=== Melhores Pontuações ===");
-    char content[11] = "";
-    int keyReceiver;
+    printf("\n\t=== Melhores Pontuações === || \tAperte ESC para voltar ao menu.\n");
 
     FILE *scoresFile;
     scoresFile = fopen("scores.txt", "r");
-    fscanf(scoresFile, "%s", &content);
-    printf("o tamanho e%i", sizeof(scoresFile));
-    printf("\n\t%s", content);
-    fclose(scoresFile);
 
+    //while para descobrir quantidade de linhas do arquivo
+    while(fgets(eachScoreLine, 15, scoresFile) != NULL){
+        printf("\n\t%s", eachScoreLine);
+    }
+
+    while((ch = fgetc(scoresFile)) != EOF){
+        if(ch == '\n'){
+            num++;
+            printf("%c", ch);
+        }
+    }
+
+
+    fclose(scoresFile);
     do{
         keyReceiver = getch();
-
     }while(keyReceiver != 27);
     showMenu();
 }
@@ -129,21 +150,21 @@ int showMenu()
 
     return choosenOption;
 }
-void confirmSaveGame(int score){
+void confirmSaveGame(char playerName[3], int score){
     int answer;
+
     system("cls");
     printf("\n\t=== Arroba Catcher ===\n");
     printf("\n\tSeu score foi %i, deseja salvar? (S/N)", score);
     do{
         answer = getch();
         if(answer == 115 || answer == 83){ //player deseja salvar score;
-        saveScore(score);
+        saveScore(playerName, score);
     }else if(answer == 110 || answer == 78){ //player não deseja salvar score;
         closeSystem();
         return;
     }
     }while(answer != 110 || answer != 115 || answer != 83 || answer != 78);
-
 
 }
 void startGame(){
@@ -153,6 +174,13 @@ void startGame(){
     int xFruit;
     int score = 0;
     int moveReceiver;
+
+    char playerName[4] = "";
+    system("cls");
+    printf("\n\t=== Arroba Catcher ===\n");
+    printf("\n\tDigite seu nick [3 caractéres]: ");
+    scanf("%s", &playerName);
+    printf("%s", playerName);
 
     score = 0;
     srand( (unsigned)time(NULL) );
@@ -205,7 +233,7 @@ void startGame(){
             }
             //config para fechar o game
             else if(moveReceiver == 27){
-                confirmSaveGame(score);
+                confirmSaveGame(playerName, score);
             }
 
             //quando usuario alcançar o @, o @ recebe uma nova posicao
@@ -218,6 +246,7 @@ void startGame(){
             }
         }
         while(1==1);
+        return playerName;
 }
 
 void executeChoosedOption(int chooseResult)
