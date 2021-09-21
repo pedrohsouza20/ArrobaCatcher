@@ -8,10 +8,10 @@ void closeSystem(){
     exit(0);
 }
 void saveScore(char playerName[4], int score){
+    char eachScoreLine[15];
     if(score > 0){
         FILE *addScore;
         addScore = fopen("scores.txt", "a");
-        printf("%s", playerName);
         fprintf(addScore, "%s", playerName);
         fprintf(addScore, "\t%i\n", score);
         fclose(addScore);
@@ -33,6 +33,7 @@ void showScores(){
     char eachScoreLine[15];
     int keyReceiver;
     int num = 0 ;
+    int auxArray, smaller, bigger;
 
     system("cls");
     printf("\n\t=== Arroba Catcher ===\n");
@@ -42,16 +43,14 @@ void showScores(){
     scoresFile = fopen("scores.txt", "r");
 
     //while para descobrir quantidade de linhas do arquivo
+
+
     while(fgets(eachScoreLine, 15, scoresFile) != NULL){
+        num++;;
         printf("\n\t%s", eachScoreLine);
     }
 
-    while((ch = fgetc(scoresFile)) != EOF){
-        if(ch == '\n'){
-            num++;
-            printf("%c", ch);
-        }
-    }
+    printf("%i num aqui <", num);
 
 
     fclose(scoresFile);

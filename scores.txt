@@ -1,3 +1,6 @@
 new	6
 POO	3
 PIO	4
+31
+pzz	23
+pot	6
