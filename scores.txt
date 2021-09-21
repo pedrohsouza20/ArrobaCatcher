@@ -1,6 +1,4 @@
-new	6
-POO	3
-PIO	4
-31
-pzz	23
-pot	6
+POO	-	1
+SCR	-	3
+ndk	-	2
+pop	-	1
