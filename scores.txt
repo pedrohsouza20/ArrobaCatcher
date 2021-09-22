@@ -1,4 +1,6 @@
-POO	-	1
-SCR	-	3
-ndk	-	2
-pop	-	1
+moo
+1
+uyy
+5
+tst
+1

@@ -9,17 +9,30 @@ void closeSystem(){
 }
 void saveScore(char playerName[4], int score){
     char eachScoreLine[15];
+    int countModule = 0;
+    int firstScore, secondScore;
+
     if(score > 0){
         FILE *addScore;
+        addScore = fopen("scores.txt", "a");
+
+        fprintf(addScore, "%s\n", playerName);
+        fprintf(addScore, "%i\n", score);
+
         addScore = fopen("scores.txt", "r");
-
         while(fgets(eachScoreLine, 15, addScore) != NULL){
-            printf("\n\t%s", eachScoreLine);
+            countModule++;
+            if((countModule % 2) == 0){
+                firstScore = atoi(eachScoreLine);
+                if(countModule >= 3 && countModule < 5){
+                    secondScore = atoi(eachScoreLine);
+                }
+
+            }
         }
+        printf("primeiro: %i", firstScore);
+        printf("segundo: %i", secondScore);
 
-
-        fprintf(addScore, "%s\t-", playerName);
-        fprintf(addScore, "\t%i\n", score);
         fclose(addScore);
 
         if(addScore != NULL){
@@ -36,12 +49,16 @@ void saveScore(char playerName[4], int score){
 }
 void showScores(){
     char ch;
-    char eachScoreLine[15];
+    char eachScoreLine[9];
     int keyReceiver;
     int num = 0 ;
     int auxArray, smaller, bigger;
     char numberReceiver[15];
     int scoreReceiver = 0;
+
+    char scoreMatrix[10][9];
+    int scoreMatrixSize = sizeof(scoreMatrix) / sizeof(scoreMatrix[0]);
+    int firstLineScore, secondLineScore;
 
     system("cls");
     printf("\n\t=== Arroba Catcher ===\n");
@@ -53,8 +70,14 @@ void showScores(){
 
     //while para descobrir quantidade de linhas do arquivo
     //e printar cada score
-    while(fgets(eachScoreLine, 15, scoresFile) != NULL){
-        printf("\n\t%s", eachScoreLine);
+    while(fgets(eachScoreLine, 9, scoresFile) != NULL){
+            num++;
+            int eachScoreLineSize = sizeof(eachScoreLine) / sizeof(eachScoreLine[0]);
+
+            //printf("ultimo numero de cada linha: %c", eachScoreLine[eachScoreLineSize - 1]);
+
+            printf("\n\t%s", eachScoreLine);
+
     }
 
     fclose(scoresFile);
