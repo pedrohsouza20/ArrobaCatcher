@@ -9,17 +9,40 @@ void closeSystem(){
 }
 void saveScore(char playerName[4], int score){
     char eachScoreLine[15];
+    char scoreMatrix[10][10];
+    int scoreMatrixArrSize = sizeof(scoreMatrix) / sizeof(scoreMatrix[0]);
+    char scoreReceiver;
+
+    printf("%i", scoreMatrixArrSize);
+
     if(score > 0){
         FILE *addScore;
-        addScore = fopen("scores.txt", "r");
+        addScore = fopen("scores.txt", "a");
 
+        int lineQuantity = 0;
+
+        printf("\n");
         while(fgets(eachScoreLine, 15, addScore) != NULL){
-            printf("\n\t%s", eachScoreLine);
+            lineQuantity++;
+
+            for(int i = 4; i < scoreMatrixArrSize; i++){
+                printf("\t%s", eachScoreLine);
+                int eachScoreLineLength = sizeof(eachScoreLine[i]);
+            printf("%i", eachScoreLineLength);
+                for(int j = i; j < scoreMatrixArrSize; j++){
+                    if(eachScoreLine[i] > eachScoreLine[j]){
+                        scoreReceiver = eachScoreLine[i];
+                        eachScoreLine[i] = eachScoreLine[j];
+                        eachScoreLine[j] = scoreReceiver;
+                    }
+                }
+            }
+
         }
 
 
-        fprintf(addScore, "%s\t-", playerName);
-        fprintf(addScore, "\t%i\n", score);
+        fprintf(addScore, "%s\n", playerName);
+        fprintf(addScore, "%i\n", score);
         fclose(addScore);
 
         if(addScore != NULL){
@@ -36,12 +59,17 @@ void saveScore(char playerName[4], int score){
 }
 void showScores(){
     char ch;
-    char eachScoreLine[15];
+    char eachScoreLine[7];
     int keyReceiver;
     int num = 0 ;
     int auxArray, smaller, bigger;
-    char numberReceiver[15];
-    int scoreReceiver = 0;
+    char numberReceiver[10];
+
+    char scoresReceiver[10][8];
+
+    char indexCompare[3];
+
+    int moduleCounter = 0;
 
     system("cls");
     printf("\n\t=== Arroba Catcher ===\n");
@@ -51,11 +79,14 @@ void showScores(){
     FILE *scoresFile;
     scoresFile = fopen("scores.txt", "r");
 
-    //while para descobrir quantidade de linhas do arquivo
-    //e printar cada score
-    while(fgets(eachScoreLine, 15, scoresFile) != NULL){
-        printf("\n\t%s", eachScoreLine);
+    //while para printar cada score
+    while(fgets(eachScoreLine, 8, scoresFile) != NULL){
+        moduleCounter++;
+
+        //printa cada linha do arquivo
+        printf("%s", eachScoreLine);
     }
+
 
     fclose(scoresFile);
     do{
