@@ -7,13 +7,31 @@
 void closeSystem(){
     exit(0);
 }
+void printGameLogo(){
+    {
+    printf("\t      __        _______    _______     ______    _______       __                          \n");
+    printf("\t     /\"\"\\      /\"      \\  /\"      \\   /    \" \\  |   _  \"\\     /\"\"\\           \n");
+    printf("\t    /    \\    |:        ||:        | // ____  \\ (. |_)  :)   /    \\                     \n");
+    printf("\t   /\" /\\  \\   |_____/   )|_____/   )/  /    ) :)|:     \\/   /\" /\\  \\                \n");
+    printf("\t  //  __\"  \\   //      /  //      /(: (____/ // (|  _  \\\\  //  __\"  \\                \n");
+    printf("\t /   /  \\\\  \\ |:  __   \\ |:  __   \\ \\        /  |: |_)  :)/   /  \\\\  \\            \n");
+    printf("\t(___/    \\___)|__|  \\___)|__|  \\___) \\\"_____/   (_______/(___/    \\___)              \n");
+    printf("\t                                                                                           \n");
+    printf("\t  ______        __  ___________  ______    __    __    _______   _______                   \n");
+    printf("\t /\" _  \"\\      /\"\"\\(\"     _   \")/\" _  \"\\  /\" |  | \"\\  /\"     \"| /\"      \\\n");
+    printf("\t(: ( \\___)    /    \\)__/  \\\\__/(: ( \\___)(:  (__)  :)(: ______)|:        |            \n");
+    printf("\t \\/ \\        /\" /\\  \\  \\\\_ /    \\/ \\      \\/      \\/  \\/    |  |_____/   )     \n");
+    printf("\t //  \\ _    //  __\"  \\ |.  |    //  \\ _   //  __  \\\\  // ___)_  //      /            \n");
+    printf("\t(:   _) \\  /   /  \\\\  \\\\:  |   (:   _) \\ (:  (  )  :)(:      \"||:  __   \\          \n");
+    printf("\t \\_______)(___/    \\___)\\__|    \\_______) \\__|  |__/  \\_______)|__|  \\___)          \n");
+}
+}
 void saveScore(char playerName[4], int score){
     char eachScoreLine[15];
     char scoreMatrix[10][10];
     int scoreMatrixArrSize = sizeof(scoreMatrix) / sizeof(scoreMatrix[0]);
     char scoreReceiver;
-
-    printf("%i", scoreMatrixArrSize);
+    int escPressed;
 
     if(score > 0){
         FILE *addScore;
@@ -29,23 +47,37 @@ void saveScore(char playerName[4], int score){
 
         if(addScore != NULL){
             printf("\n\n\t=== Seu Score foi salvo! ===\n");
+            printf("\n\tAperte Esc para voltar ao menu");
+
+            do{
+                escPressed = getch();
+            }while(escPressed != 27);
+            main();
         }else{
             printf("\n\tErro ao salvar Score");
+            printf("\n\tAperte Esc para voltar ao menu");
+            do{
+                escPressed = getch();
+            }while(escPressed != 27);
+            main();
+
+
         }
 
-        closeSystem();
     }else{
         printf("\n\n\t=== Não é possivel salvar Score 0 ===\n");
-        closeSystem();
+        printf("\n\n\t=== Aperte Esc para voltar ao menu");
+        do{
+                escPressed = getch();
+            }while(escPressed != 27);
+            main();
+
     }
 }
 void showScores(){
-    char ch;
-    char eachScoreLine[7];
+    int main();
+    char eachScoreLine[25];
     int keyReceiver;
-    int num = 0 ;
-    int auxArray, smaller, bigger;
-    char numberReceiver[10];
 
     char scoresReceiver[10][8];
 
@@ -54,19 +86,20 @@ void showScores(){
     int moduleCounter = 0;
 
     system("cls");
-    printf("\n\t=== Arroba Catcher ===\n");
-    printf("\n\t=== Melhores Pontuações === || \tAperte ESC para fechar.\n");
-    printf("\n\tPlayer\t\tScore\n\t=====================\n");
+    printGameLogo();
+    printf("\n\n\t\t=== Pontuações === \t|| \t\t=== Aperte ESC para fechar. ===\n");
+    printf("\n\t\tPlayer\t\tScore\n\t\t=====================\n");
 
     FILE *scoresFile;
     scoresFile = fopen("scores.txt", "r");
 
     //while para printar cada score
-    while(fgets(eachScoreLine, 8, scoresFile) != NULL){
+    printf("\n");
+    while(fgets(eachScoreLine, 25, scoresFile) != NULL){
         moduleCounter++;
 
         //printa cada linha do arquivo
-        printf("\t%s", eachScoreLine);
+        printf("\t\t%s", eachScoreLine);
     }
 
 
@@ -74,7 +107,7 @@ void showScores(){
     do{
         keyReceiver = getch();
     }while(keyReceiver != 27);
-    closeSystem();
+    main();
 }
 void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score)
 {
@@ -101,7 +134,7 @@ void renderTable(int yPlayer, int xPlayer, int yFruit, int xFruit, int score)
         }
     }
 
-    printf("\n\t=== Arroba Catcher ===\t\t==== Seu Score: %i ====", score);
+    printf("\n\t=== Arroba Catcher ===\t\t==== Seu Score: %i ====\t\tPara sair, pressione ESC", score);
     printf("\n\n\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\n", table[0][0], table[0][1], table[0][2], table[0][3], table[0][4], table[0][5], table[0][6], table[0][7], table[0][8], table[0][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[1][0], table[1][1], table[1][2], table[1][3], table[1][4], table[1][5], table[1][6], table[1][7], table[1][8], table[1][9]);
     printf("\t%c    %c    %c    %c    %c    %c    %c    %c    %c    %c\n\t\n", table[2][0], table[2][1], table[2][2], table[2][3], table[2][4], table[2][5], table[2][6], table[2][7], table[2][8], table[2][9]);
@@ -125,7 +158,8 @@ int showMenu()
     do
     {
         system("cls");
-        printf("\n\t=== Arroba Catcher ===\n\n");
+        printGameLogo();
+        printf("\n\n");
         //printf("%i", arrowMovies);
         for(int i = 0; i < 3; i++)
         {
@@ -187,13 +221,36 @@ void startGame(){
     int xFruit;
     int score = 0;
     int moveReceiver;
-    char playerName[4] = "";
+    char playerName[99];
+    int letterIndex = 0;
+    int playerNameLetters;
 
     system("cls");
     printf("\n\t=== Arroba Catcher ===\n");
     printf("\n\tDigite seu nick [3 caractéres]: ");
+
     scanf("%s", &playerName);
-    printf("%s", playerName);
+    while(playerName[letterIndex] != '\0'){
+        letterIndex++;
+    }
+    playerNameLetters = letterIndex;
+
+    if(playerNameLetters > 3 || playerNameLetters < 3){
+        do{
+            letterIndex = 0;
+            system("cls");
+            printf("\n\t=== Arroba Catcher ===\n");
+            printf("\n\tNick inválido, digite seu nick [3 caractéres]: ");
+            scanf("%s", &playerName);
+            while(playerName[letterIndex] != '\0'){
+                letterIndex++;
+            }
+            playerNameLetters = letterIndex;
+        }while(playerNameLetters > 3 || playerNameLetters < 3);
+    }else{
+
+    }
+
 
     score = 0;
     srand( (unsigned)time(NULL) );
@@ -280,16 +337,18 @@ int main()
     setlocale(LC_ALL, "");
 
     int showMenuResult;
-    showMenuResult = showMenu();
-    //do while para permitir que entre e saia do score
-    do{
 
+    showMenuResult = showMenu();
+    executeChoosedOption(showMenuResult);
+    //do while para permitir que entre e saia do score
+    /*do{
         //pega o retorno da escolha do menu
         //e o usa como argumento para a funcao que executa
         //acao de acordo com a escolha do usuário
-
+        showMenuResult = showMenu();
         executeChoosedOption(showMenuResult);
-    }while(showMenuResult != 0);
+
+    }while(showMenuResult != 0);*/
 
     return 0;
 }
