@@ -22,27 +22,9 @@ void saveScore(char playerName[4], int score){
         int lineQuantity = 0;
 
         printf("\n");
-        while(fgets(eachScoreLine, 15, addScore) != NULL){
-            lineQuantity++;
 
-            for(int i = 4; i < scoreMatrixArrSize; i++){
-                printf("\t%s", eachScoreLine);
-                int eachScoreLineLength = sizeof(eachScoreLine[i]);
-            printf("%i", eachScoreLineLength);
-                for(int j = i; j < scoreMatrixArrSize; j++){
-                    if(eachScoreLine[i] > eachScoreLine[j]){
-                        scoreReceiver = eachScoreLine[i];
-                        eachScoreLine[i] = eachScoreLine[j];
-                        eachScoreLine[j] = scoreReceiver;
-                    }
-                }
-            }
-
-        }
-
-
-        fprintf(addScore, "%s\n", playerName);
-        fprintf(addScore, "%i\n", score);
+        fprintf(addScore, "%s\t-", playerName);
+        fprintf(addScore, "\t%i\n", score);
         fclose(addScore);
 
         if(addScore != NULL){
@@ -84,7 +66,7 @@ void showScores(){
         moduleCounter++;
 
         //printa cada linha do arquivo
-        printf("%s", eachScoreLine);
+        printf("\t%s", eachScoreLine);
     }
 
 
